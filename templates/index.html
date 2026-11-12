@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Puzzle Coach — learn the rule, not just the answer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <span class="c c1"></span><span class="c c2"></span><span class="c c0"></span>
+        <span class="c c0"></span><span class="c c3"></span><span class="c c4"></span>
+        <span class="c c5"></span><span class="c c0"></span><span class="c c2"></span>
+      </div>
+      <div>
+        <h1>Puzzle Coach</h1>
+        <p class="tagline" data-i18n="tagline">Learn the hidden rule — not just the answer.</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button type="button" id="btn-lang" class="chip" title="Language">中文</button>
+      <a class="chip ghost" href="https://slayy-hacks.devpost.com/" target="_blank" rel="noopener">SLAY HACKS 2026</a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="library panel">
+      <div class="panel-head">
+        <h2 data-i18n="library">Lesson puzzles</h2>
+        <button type="button" id="btn-paste" class="btn small" data-i18n="load">Load / paste</button>
+      </div>
+      <p class="lede" data-i18n="library_help">Each lesson hides a short visual program. Study the examples, then paint the test grid.</p>
+      <div id="puzzle-list" class="puzzle-list"></div>
+    </aside>
+
+    <section class="workspace">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow" id="puzzle-skill"></p>
+            <h2 id="puzzle-title">Puzzle Coach</h2>
+          </div>
+          <span class="badge" id="puzzle-diff"></span>
+        </div>
+        <p class="lede" id="puzzle-blurb"></p>
+        <div id="examples" class="examples"></div>
+      </div>
+
+      <div class="panel test-panel">
+        <div class="panel-head">
+          <h2 data-i18n="test_title">Your turn: the test grid</h2>
+          <div class="row-actions">
+            <button type="button" id="btn-reset" class="btn ghost small" data-i18n="reset">Reset canvas</button>
+            <button type="button" id="btn-check" class="btn small" data-i18n="check">Check my answer</button>
+          </div>
+        </div>
+        <div class="test-wrap">
+          <div>
+            <p class="grid-label" data-i18n="test_input">Test input</p>
+            <div id="test-input"></div>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div>
+            <p class="grid-label" data-i18n="your_canvas">Your canvas — click to paint</p>
+            <div id="test-canvas"></div>
+            <div id="palette" class="palette"></div>
+          </div>
+          <div id="reveal-slot" class="reveal-slot hidden">
+            <p class="grid-label" data-i18n="solution">Verified solution</p>
+            <div id="test-solution"></div>
+          </div>
+        </div>
+        <p id="check-result" class="check-result" hidden></p>
+      </div>
+
+      <div id="steps-panel" class="panel hidden">
+        <div class="panel-head">
+          <h2 data-i18n="steps_title">Rule walkthrough</h2>
+        </div>
+        <div id="steps" class="steps"></div>
+      </div>
+    </section>
+
+    <aside class="coach panel">
+      <div class="panel-head">
+        <h2 data-i18n="coach">Coach</h2>
+        <span class="dot" id="engine-dot" title="Offline rule engine"></span>
+      </div>
+      <div id="chat" class="chat" aria-live="polite"></div>
+      <div class="coach-actions">
+        <button type="button" id="btn-hint" class="btn primary" data-i18n="hint">Give me a hint</button>
+        <button type="button" id="btn-explain" class="btn" data-i18n="explain">Explain the rule</button>
+        <button type="button" id="btn-walk" class="btn ghost" data-i18n="walk">Walk the test</button>
+        <button type="button" id="btn-search" class="btn ghost" data-i18n="search">Search for a rule</button>
+        <button type="button" id="btn-reveal" class="btn ghost danger" data-i18n="reveal">Reveal the solution</button>
+      </div>
+      <p class="fineprint" data-i18n="fineprint">The coach uses a verified rule-search engine. It will not invent a rule that fails the examples. An optional language model can only rephrase an already-checked explanation.</p>
+    </aside>
+  </main>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="panel-head">
+        <h2 data-i18n="paste_title">Load a custom puzzle</h2>
+        <button type="button" id="btn-close-modal" class="btn ghost small">×</button>
+      </div>
+      <p class="lede" data-i18n="paste_help">Paste ARC-style JSON, or text with “Example 1 input / output” and “Test input” grids (rows of digits 0–9).</p>
+      <label class="checkline">
+        <input type="checkbox" id="use-marker" />
+        <span data-i18n="marker">This puzzle uses a border marker</span>
+      </label>
+      <textarea id="paste-text" spellcheck="false" placeholder='{"examples":[{"input":[[0,1],[1,0]],"output":[[0,2],[2,0]]}],"test":[[1,0],[0,1]]}'></textarea>
+      <div class="row-actions end">
+        <button type="button" id="btn-load-paste" class="btn primary" data-i18n="start_custom">Start coaching</button>
+      </div>
+      <p id="paste-error" class="check-result bad" hidden></p>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
