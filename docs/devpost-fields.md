@@ -20,7 +20,7 @@ Puzzle Coach
 
 An AI tutor that teaches you the hidden rule in a logic-grid puzzle, instead of just filling in the answer.
 
-(117 characters, including spaces and the final period.)
+(107 characters, including spaces and the final period.)
 
 ---
 
