@@ -113,7 +113,7 @@ Devpost only accepts a YouTube, Vimeo, or Youku URL — not a raw MP4.
 3. Paste the watch URL here, then into the Devpost video field:
 
 ```
-https://youtu.be/REPLACE_ME
+https://youtu.be/3iM9Z5VeFbI
 ```
 
 The video is 2 minutes 41 seconds, 1080p, with English narration and subtitles, recorded from the real app.
