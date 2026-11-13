@@ -31,20 +31,35 @@ That matters for responsible tutoring: the explanation is faithful to a checked 
 
 - Six built-in lessons, from “count the holes” to a two-step “recolour, then fall” program.
 - Progressive hints, written for each lesson, plus automatic observations on custom puzzles.
-- A paintable test canvas, with a check that highlights a region still to fix.
+- A paintable test canvas, with a check that highlights a region still to fix — it does not fill in the answer for you.
 - A rule walkthrough that shows the grid after each operator.
 - Load your own puzzle as ARC-style JSON or as example/test text.
 - English / 中文 interface.
 - Works entirely on your machine; no account and no network required for the engine.
 
+### Built-in lessons
+
+| Lesson | What you practise |
+| --- | --- |
+| Hole Painters | An interior property (holes) decides each shape’s new colour. |
+| Border Cleanup | Some objects vanish; notice where the vanishing ones sit. |
+| Picture Frames | New cells appear around some objects — what do they have in common? |
+| Nearest Seed | Big shapes change colour; single-cell “seeds” do the colouring. |
+| Laser Dots | A few cells shoot colour across a row; what starts a ray, and what stops it? |
+| Fall of Towers | Two-step program: some shapes recolour, then some of them move. |
+
+![Checking an attempt highlights a region to fix, without giving the answer](docs/02-check-attempt.png)
+
 ![Rule walkthrough after the coach explains the program](docs/03-rule-walkthrough.png)
+
+![Fall of Towers, a two-step lesson](docs/04-two-step-lesson.png)
 
 ## How to run
 
 You need Python 3.10+ (3.13 is fine).
 
 ```bash
-git clone https://github.com/zdfgu113/puzzle-coach.git   # after you publish the repo
+git clone https://github.com/zdfgu113/puzzle-coach.git
 cd puzzle-coach
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
@@ -54,7 +69,9 @@ python app.py
 
 Then open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-To run the checks that verify every lesson and that the search engine recovers the intended programs:
+## Tests
+
+The checks verify every built-in lesson (authored rules match all examples and the hidden test), that English and Chinese explanations are produced, that the attempt checker flags a wrong region, that the JSON/text loaders parse a puzzle, and that the search engine recovers the intended programs — including the two-step Fall of Towers rule:
 
 ```bash
 source .venv/bin/activate
@@ -105,6 +122,12 @@ Test input
 
 The `puzzles/` folder has the six lessons in JSON if you want a starting template. Tick “border marker” only if the puzzle uses a unique coloured cell on the border as a reference.
 
+## Demo video
+
+A 2 minute 41 second walkthrough with English narration and subtitles is in [docs/demo.mp4](docs/demo.mp4). It was recorded from the real running app and shows layered hints, the attempt checker, a verified rule walkthrough, the two-step lesson, loading a custom puzzle, and the English / 中文 switch.
+
+The spoken script is in [docs/demo-narration.md](docs/demo-narration.md); the original shot list is in [docs/demo-script.md](docs/demo-script.md). Still frames from the video are under [docs/demo-frames/](docs/demo-frames/).
+
 ## Project layout
 
 ```
@@ -118,13 +141,9 @@ puzzlecoach/
   llm.py               Optional explanation polish
 static/  templates/    Web UI
 puzzles/               Lesson JSON
-docs/                  Screenshots and the demo-video script
+docs/                  Screenshots, demo video, and Devpost draft text
 tests/                 Unit checks
 ```
-
-## Demo video
-
-A 2–4 minute walkthrough script is in [docs/demo-script.md](docs/demo-script.md). Screenshots used on this page are under `docs/`.
 
 ## What this prototype does not do yet
 
